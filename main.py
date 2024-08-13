@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import os
 
@@ -9,7 +10,7 @@ app = Flask(__name__, template_folder="templates")
 @app.route('/', methods=["GET"])
 def index():
     content = [ "Introduction", "Shop", "Cart" ]
-    
+
     return render_template("home.html",
                            title="Home",
                            content=content
@@ -34,6 +35,36 @@ def filters():
                            title="Filters",
                            content=content
                            )
+
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
+    if request.method == "GET":
+        return render_template("profile.html")
+    else:
+        return f"{request.form.get('name')}"
+
+
+@app.route("/file", methods=["GET","POST"])
+def upload():
+    if request.method == "GET":
+        return render_template("file.html")
+    else:
+        if "img" not in request.files:
+            return 'No file provided'
+        
+        file = request.files['img']
+
+        if file.filename == '':
+            return 'No selected file'
+        
+        if file:
+            secure_name = secure_filename(file.filename)
+
+            file.save(f'./uploads/{secure_name}',)
+            return 'Success!'
+        else:
+            return 'Failure!'
+
 
 if __name__ == '__main__':
     app.run(host=os.getenv("HOST"), port=os.getenv("PORT"), debug=True)
