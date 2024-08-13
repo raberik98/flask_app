@@ -6,30 +6,34 @@ load_dotenv()
 
 app = Flask(__name__, template_folder="templates")
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def index():
-    return "<h1>Hello World!</h1>"
+    content = [ "Introduction", "Shop", "Cart" ]
+    
+    return render_template("home.html",
+                           title="Home",
+                           content=content
+                           )
 
 
-@app.route("/hi/<name>")
-def name(name):
-    return f"<h2>Hello {name}<h2>"
+@app.template_filter("reverse_string")
+def reverse_string(text):
+    return text[::-1]
 
 
-@app.route("/add/<int:number1>/<int:number2>")
-def add(number1, number2):
-    return f"<h1>The value is: {number1 + number2}</h1>"
+@app.template_filter("repeate")
+def repeate(text, times=2):
+    return text * times
 
 
-@app.route("/queries")
-def queries():
-    if "data" in request.args.keys() and "data2" in request.args.keys():
-        data = request.args.get('data')
-        data2 = request.args['data2']
-        return f"first: {data} and second: {data2}"
-    else: 
-        return "<h1>Error give some deceant data!</h1>"
+@app.route("/filters", methods=["GET"])
+def filters():
+    content = ["one", "two", "three", "four"]
 
+    return render_template("filters.html",
+                           title="Filters",
+                           content=content
+                           )
 
 if __name__ == '__main__':
     app.run(host=os.getenv("HOST"), port=os.getenv("PORT"), debug=True)
