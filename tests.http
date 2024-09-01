@@ -1,0 +1,5 @@
+###
+GET http://localhost:8080/api/employees
+
+###
+GET http://localhost:8080/api/employee/3
