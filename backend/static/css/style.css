@@ -1,3 +1,9 @@
-body {
-    background-color: gray;
+body{
+    color: #38598b;
+    font-family: Roboto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100dvw;
+    height: 100dvh;
 }

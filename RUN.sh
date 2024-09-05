@@ -13,6 +13,7 @@ if [ "$#" -eq 0 ]; then
     echo 'downgrade:         downgrade db';
     echo 'db:                start the db in Docker in non detached mode';
     echo 'dbd:               start the db in Docker in detached mode';
+    echo 'backup:'           create a db backup;
     echo '                             '
     echo '-----------------------------'
     
@@ -24,7 +25,7 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-valid_args=('app' 'init' 'migrate' 'upgrade' 'downgrade' 'db' 'dbd' 'venv')
+valid_args=('app' 'init' 'migrate' 'upgrade' 'downgrade' 'db' 'dbd' 'venv' 'backup')
 
 is_valid_arg() {
     local arg="$1"
@@ -61,6 +62,8 @@ if is_valid_arg "$1"; then
         -e POSTGRES_USER=admin \
         -e POSTGRES_DB=company \
         -p 5432:5432 -d postgres
+    elif [ "$1" == "backup" ]; then
+        pg_dump -U admin -h 0.0.0.0 -p 5432 company > backup.sql
     else
         echo "Uhmm dude..."
     fi
