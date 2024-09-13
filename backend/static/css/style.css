@@ -1,9 +1,7 @@
-body{
-    color: #38598b;
-    font-family: Roboto; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100dvw;
-    height: 100dvh;
+:root {
+    --my-light-gray: #868e96;
+}
+
+.breadcrumb-item {
+    --bs-breadcrumb-divider-color: var(--my-light-gray);
 }

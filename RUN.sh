@@ -14,6 +14,7 @@ if [ "$#" -eq 0 ]; then
     echo 'db:                start the db in Docker in non detached mode';
     echo 'dbd:               start the db in Docker in detached mode';
     echo 'backup:'           create a db backup;
+    echo 'seed:'             populate the dv;
     echo '                             '
     echo '-----------------------------'
     
@@ -25,7 +26,7 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-valid_args=('app' 'init' 'migrate' 'upgrade' 'downgrade' 'db' 'dbd' 'venv' 'backup')
+valid_args=('app' 'init' 'migrate' 'upgrade' 'downgrade' 'db' 'dbd' 'venv' 'backup' 'seed')
 
 is_valid_arg() {
     local arg="$1"
@@ -64,6 +65,8 @@ if is_valid_arg "$1"; then
         -p 5432:5432 -d postgres
     elif [ "$1" == "backup" ]; then
         pg_dump -U admin -h 0.0.0.0 -p 5432 company > backup.sql
+    elif [ "$1" == "seed" ]; then
+        psql -U admin -d company -p 5432 -h 0.0.0.0 -f ./db/seed.sql
     else
         echo "Uhmm dude..."
     fi

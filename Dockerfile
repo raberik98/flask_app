@@ -10,4 +10,4 @@ ENV BACKEND_PORT=8080
 
 EXPOSE ${BACKEND_PORT}
 
-CMD [ "python", "main.py" ]
+CMD [ "python", "app.py" ]

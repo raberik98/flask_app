@@ -1,25 +1,51 @@
-version: '3.3'
+version: '3.8'
 
 services:
-  flask-backend:
-    image: flask-backend
-    ports:
-      - "8080:8080"
+  flask-backend-1:
+    build: .
+    env_file: 
+      - path: ./.env
+        required: true
     environment:
-      - BACKEND_PORT=8080
+      - BACKEND_PORT=3000
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+  flask-backend-2:
+    build: .
+    env_file: 
+      - path: ./.env
+        required: true
+    environment:
+      - BACKEND_PORT=3001
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: postgres
     ports:
       - 5432:5432
-    environment:
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=company
+    env_file: 
+      - path: ./.env
+        required: true
+    healthcheck:
+      test: pg_isready -U $${POSTGRES_USER} -h localhost -d $${POSTGRES_DB}
+      timeout: 2s
+      retries: 5
+      start_period: 2s
+
+  nginx:
+    image: nginx:1.27.1-alpine
+    ports:
+      - 8080:8080
     volumes:
-          - pgdata:/var/lib/postgresql/data
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./backend/static:/usr/share/nginx/html/static:ro
+    depends_on:
+      - flask-backend-1
+      - flask-backend-2
 
 volumes:
   pgdata:

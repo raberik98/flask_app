@@ -1,7 +1,9 @@
 -- schemas.sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 
 CREATE TABLE employees (
-    id SERIAL PRIMARY KEY, -- Unique employee ID, auto-incremented
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY, -- Unique employee ID, auto-incremented
     name VARCHAR(255) NOT NULL, -- Employee name
     gender BOOLEAN NOT NULL, -- Gender (Male, Female)
     position VARCHAR(255), -- Employee's job title or position
@@ -27,7 +29,7 @@ CREATE TABLE employees (
 );
 
 CREATE TABLE locations (
-    id SERIAL PRIMARY KEY,
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     city VARCHAR(255) NOT NULL,
     state VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
@@ -35,7 +37,7 @@ CREATE TABLE locations (
 );
 
 CREATE TABLE employee_location (
-    employee_id INT REFERENCES employees(id),
-    location_id INT REFERENCES locations(id),
+    employee_id UUID REFERENCES employees(id),
+    location_id UUID REFERENCES locations(id),
     PRIMARY KEY (employee_id, location_id)
 );

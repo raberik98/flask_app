@@ -7,4 +7,12 @@ public_view_bp = Blueprint('public_v', __name__, template_folder='../templates/P
 def index():
     uid = 12
     permission = Employee.get_permission(uid)
-    return render_template('home.html', title='Company', user_permission=permission)
+    return render_template('home.html',
+                            title='Company',
+                            user_permission=permission,
+                            breadcrumbs=[
+                                {"text": "Home", "href": "#"},
+                                {"text": "Library", "href": "#"},
+                                {"text": "Data", "href": "#"}
+                            ]
+                        )

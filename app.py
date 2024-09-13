@@ -5,7 +5,6 @@ if __name__ == '__main__':
     app = create_app()
 
     app.run(host=BACKEND_HOST,
-
             port=BACKEND_PORT,
             debug=True)
 

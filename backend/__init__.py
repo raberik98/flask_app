@@ -20,6 +20,11 @@ def create_app():
     # Controller blueprints are registered 
     app.register_blueprint(employee_controller_bp)
 
+    # 404 page
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return app.send_static_file('html/404.html'), 404
+
     # Database setup
     db.init_app(app)
     migrate = Migrate(app, db)
