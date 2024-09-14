@@ -32,7 +32,7 @@ services:
         required: true
     healthcheck:
       test: pg_isready -U $${POSTGRES_USER} -h localhost -d $${POSTGRES_DB}
-      timeout: 2s
+      timeout: 1s
       retries: 5
       start_period: 2s
 

@@ -1,7 +1,0 @@
-:root {
-    --my-light-gray: #868e96;
-}
-
-.breadcrumb-item {
-    --bs-breadcrumb-divider-color: var(--my-light-gray);
-}

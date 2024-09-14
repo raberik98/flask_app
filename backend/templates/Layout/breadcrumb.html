@@ -1,4 +1,13 @@
-<nav aria-label="breadcrumb" class="w-100 pt-2 p-3 fs-4">
+<style>
+    :root {
+        --my-light-gray: #868e96;
+    }
+
+    .breadcrumb-item {
+        --bs-breadcrumb-divider-color: var(--my-light-gray);
+    }
+</style>
+<nav aria-label="breadcrumb" class="w-100 pt-2 p-3 fs-5">
     <ol class="breadcrumb">
         {% for breadcrumb in breadcrumbs %}
         {% if loop.last %}
